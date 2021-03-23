@@ -1,0 +1,24 @@
+{
+  "name": "Semana-JS-expert-03",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juliapp/Semana-JS-expert-03.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juliapp/Semana-JS-expert-03/issues"
+  },
+  "homepage": "https://github.com/Juliapp/Semana-JS-expert-03#readme",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
