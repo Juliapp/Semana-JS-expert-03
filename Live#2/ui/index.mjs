@@ -1,9 +1,12 @@
 import { database } from '../shared/data.mjs';
-const path = globalThis.window ? 'browser' : 'console';
 
-const { default: ViewFactory } = await import(
-  `./../plataforms/${path}/index.mjs`
-);
+(async () => {
+  const plataform = globalThis.window ? 'browser' : 'console';
 
-const app = new ViewFactory();
-app.render(database);
+  const { default: ViewFactory } = await import(
+    `./../plataforms/${plataform}/index.mjs`
+  );
+
+  const app = new ViewFactory();
+  app.render(database);
+})();
