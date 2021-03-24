@@ -1,5 +1,33 @@
 export default class TableWebComponent {
   render(data) {
-    window.alert('hi table web');
+    const htmlTemplate = this.preparedData(data);
+    document.body.insertAdjacentHTML('afterbegin', htmlTemplate);
+  }
+
+  preparedData(data) {
+    const [firstItem] = data;
+    const joinLists = (list) => list.join('');
+
+    const tHeaders = Object.keys(firstItem).map(
+      (text) => `<th scope="col">${text}</th>`
+    );
+
+    const tBody = data
+      .map((item) => Object.values(item))
+      .map((item) => item.map((value) => `<td>${value}</td>`))
+      .map((tds) => `<tr>${joinLists(tds)}</tr>`);
+
+    const template = `
+      <table class="table table-dark">
+        <thead>
+          ${joinLists(tHeaders)}
+        </thead>
+        <tbody>
+          ${joinLists(tBody)}
+        </tbody>
+      </table>
+    `;
+
+    return template;
   }
 }
