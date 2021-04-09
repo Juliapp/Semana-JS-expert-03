@@ -5,8 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "user01": "npm start -- --username juli --room sala01 --hostUri https://localhost:9898",
+    "user02": "npm start -- --username jsus --room sala01 --hostUri https://localhost:9898",
+    "user03": "npm start -- --username dani --room sala01 --hostUri https://localhost:9898",
+    "user04": "npm start -- --username adi --room sala01 --hostUri https://localhost:9898"
   },
   "keywords": [],
   "author": "",
