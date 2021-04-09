@@ -1,4 +1,5 @@
 import ComponentBuilder from './components.js';
+import { constants } from './constants.js';
 export default class TerminalController {
   #usersColors = new Map();
 
@@ -33,8 +34,43 @@ export default class TerminalController {
     };
   }
 
+  #onLogChanged({ screen, activityLog }) {
+    return (msg) => {
+      const [userName] = msg.split(/\s/);
+      const color = this.#getUserColors(userName);
+      activityLog.addItem(`{${color}}{bold}${msg.toString()}{/}`);
+      screen.render();
+    };
+  }
+
+  #onStatusChanged({ screen, status }) {
+    return (users) => {
+      const { content } = status.items.shift();
+      status.clearItems();
+      status.addItem(content);
+
+      users.forEach((userName) => {
+        const color = this.#getUserColors(userName);
+        status.addItem(`{${color}}{bold}${userName.toString()}{/}`);
+      });
+
+      screen.render();
+    };
+  }
+
   #registerEvents(eventEmitter, components) {
-    eventEmitter.on('message:received', this.#onMessageReceived(components));
+    eventEmitter.on(
+      constants.events.app.MESSAGE_RECEIVED,
+      this.#onMessageReceived(components)
+    );
+    eventEmitter.on(
+      constants.events.app.ACTIVITYLOG_UPDATED,
+      this.#onLogChanged(components)
+    );
+    eventEmitter.on(
+      constants.events.app.STATUS_UPDATED,
+      this.#onStatusChanged(components)
+    );
   }
 
   async initializeTable(eventEmitter) {
@@ -43,25 +79,12 @@ export default class TerminalController {
       .setLayoutComponent()
       .setInputComponent(this.#onInputReceived(eventEmitter))
       .setChatComponent()
+      .setActivityLogComponent()
+      .setStatusComponent()
       .build();
 
     this.#registerEvents(eventEmitter, components);
     components.input.focus();
     components.screen.render();
-
-    setInterval(() => {
-      eventEmitter.emit('message:received', {
-        message: 'hey',
-        userName: 'juli',
-      });
-      eventEmitter.emit('message:received', {
-        message: 'iae',
-        userName: 'bruno',
-      });
-      eventEmitter.emit('message:received', {
-        message: 'how',
-        userName: 'jsus',
-      });
-    });
   }
 }
