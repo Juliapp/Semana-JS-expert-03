@@ -31,10 +31,22 @@ export default class EventManager {
     const user = message;
     this.#allUsers.set(user.id, user.userName);
     this.#updateUsersComponent();
+    this.#updateActiveteLogComponent(`${user.userName} joined`);
+  }
+
+  #emitComponentUpdatet(event, message) {
+    this.componentEmitter.emit(event, message);
+  }
+
+  #updateActiveteLogComponent(message) {
+    this.#emitComponentUpdatet(
+      constants.events.app.ACTIVITYLOG_UPDATED,
+      message
+    );
   }
 
   #updateUsersComponent() {
-    this.componentEmitter.emit(
+    this.#emitComponentUpdatet(
       constants.events.app.STATUS_UPDATED,
       Array.from(this.#allUsers.values())
     );
