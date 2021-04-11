@@ -1,7 +1,7 @@
-import SocketServer from './socket.js';
+import SocketServer from './src/socket.js';
 import Event from 'events';
-import { constants } from './constants.js';
-import Controller from './controller.js';
+import { constants } from './src/constants.js';
+import Controller from './src/controller.js';
 const eventEmitter = new Event();
 
 // async function testServer() {
