@@ -20,7 +20,7 @@ export default class TerminalController {
   #onInputReceived(eventEmitter) {
     return function () {
       const message = this.getValue();
-      console.log(message);
+      eventEmitter.emit(constants.events.app.MESSAGE_SENT, message);
       this.clearValue();
     };
   }
@@ -51,7 +51,7 @@ export default class TerminalController {
 
       users.forEach((userName) => {
         const color = this.#getUserColors(userName);
-        status.addItem(`{${color}}{bold}${userName.toString()}{/}`);
+        status.addItem(`{${color}}{bold}${userName}{/}`);
       });
 
       screen.render();

@@ -1,9 +1,46 @@
+import { throws } from 'assert';
+import Event from 'events';
 export default class SocketClient {
   #serverConnection = {};
+  #serverListener = new Event();
+
   constructor({ host, port, protocol }) {
     this.host = host;
     this.port = port;
     this.protocol = protocol;
+  }
+
+  sendMessage(event, message) {
+    this.#serverConnection.write(JSON.stringify({ event, message }));
+  }
+
+  attachEvents(events) {
+    this.#serverConnection.on('data', (data) => {
+      try {
+        data
+          .toString()
+          .split('\n')
+          .filter((line) => !!line)
+          .map(JSON.parse)
+          .map(({ event, message }) => {
+            this.#serverListener.emit(event, message);
+          });
+      } catch (error) {
+        console.error('invalid!', data.toString(), error);
+      }
+    });
+
+    this.#serverConnection.on('end', () => {
+      console.log('Server disconnected');
+    });
+
+    this.#serverConnection.on('error', (error) =>
+      console.error('Deu ruim', error)
+    );
+
+    for (const [key, value] of events) {
+      this.#serverListener.on(key, value);
+    }
   }
 
   async createConnection() {
@@ -27,6 +64,6 @@ export default class SocketClient {
 
   async initialize() {
     this.#serverConnection = await this.createConnection();
-    console.log('Successfully connected to the server');
+    console.log('Successfully connected to server');
   }
 }
