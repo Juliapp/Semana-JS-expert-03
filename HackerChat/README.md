@@ -8,7 +8,7 @@ This is a simple command line chat developed at JS Expert Week by Erick Wendel
 
 Node ^15
 
-## Running Project
+## Downloading dependencies
 
 ### Client
 
@@ -22,4 +22,18 @@ $ npm init
 ```bash
 $ cd server
 $ npm init
+```
+
+## Running project
+
+At the server
+
+```bash
+$ npm start
+```
+
+At the client
+
+```bash
+$ npm start -- --username your_user_name_here --room your_room_here --hostUri http://localhost:9898
 ```
